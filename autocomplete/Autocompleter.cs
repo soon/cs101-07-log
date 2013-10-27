@@ -92,7 +92,7 @@ namespace autocomplete
                 return new string[0];
             }
 
-            var e = _searcher.IndexOfPastTheLast(prefix);
+            var e = _searcher.IndexOfPastTheLast(prefix, _searcher.Begin, _searcher.End);
 
             var res = new string[Math.Min(e - b, count)];
             for(int i = 0; i < res.Length; ++i)
