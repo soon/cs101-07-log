@@ -4,24 +4,24 @@ using System.Linq;
 
 namespace autocomplete
 {
-	// Внимание!
-	// Есть одна распространенная ловушка при сравнении строк: строки можно сравнивать по-разному:
-	// с учетом регистра, без учета, зависеть от кодировки и т.п.
-	// В файле словаря все слова отсортированы мтодом StringComparison.OrdinalIgnoreCase.
-	// Во всех функциях сравнения строк в C# можно передать способ сравнения.
-	class Autocompleter
-	{
-		private readonly string[] items;
+    // Внимание!
+    // Есть одна распространенная ловушка при сравнении строк: строки можно сравнивать по-разному:
+    // с учетом регистра, без учета, зависеть от кодировки и т.п.
+    // В файле словаря все слова отсортированы мтодом StringComparison.OrdinalIgnoreCase.
+    // Во всех функциях сравнения строк в C# можно передать способ сравнения.
+    class Autocompleter
+    {
+        private readonly string[] items;
         private _BinarySearcher<string> _searcher;
 
-		public Autocompleter(string[] loadedItems)
-		{
-			items = loadedItems;
+        public Autocompleter(string[] loadedItems)
+        {
+            items = loadedItems;
             _searcher = new _BinarySearcher<string>(items, new _MyStringComparer());
-		}
+        }
 
-		// Найти произвольный элемент словаря, начинающийся с prefix.
-		// Ускорьте эту фунцию так, чтобы она работала за O(log(n))
+        // Найти произвольный элемент словаря, начинающийся с prefix.
+        // Ускорьте эту фунцию так, чтобы она работала за O(log(n))
 
         public string FindByPrefixBF(string prefix)
         {
@@ -34,10 +34,10 @@ namespace autocomplete
         }
 
 
-		public string FindByPrefix(string prefix)
-		{
+        public string FindByPrefix(string prefix)
+        {
             var i = _searcher.IndexOf(prefix);
-		    if(i == -1)
+            if(i == -1)
             {
                 return null;
             }
@@ -45,11 +45,11 @@ namespace autocomplete
             {
                 return items[i];
             }
-		}
+        }
 
-		// Найти первые (в порядке следования в файле) count (или меньше, если их меньше count) элементов словаря, 
-		// начинающийся с prefix.
-		// Эта функция должна работать за O(log(n) + count)
+        // Найти первые (в порядке следования в файле) count (или меньше, если их меньше count) элементов словаря, 
+        // начинающийся с prefix.
+        // Эта функция должна работать за O(log(n) + count)
 
         public string[] FindByPrefixBF(string prefix, int count)
         {
@@ -83,8 +83,8 @@ namespace autocomplete
             return new_arr;
         }
 
-		public string[] FindByPrefix(string prefix, int count)
-		{
+        public string[] FindByPrefix(string prefix, int count)
+        {
             var b = _searcher.IndexOfFirst(prefix);
             
             if(b == -1)
@@ -101,10 +101,10 @@ namespace autocomplete
             }
 
             return res;
-		}
+        }
 
-		// Найти количество слов словаря, начинающихся с prefix
-		// Эта функция должна работать за O(log(n))
+        // Найти количество слов словаря, начинающихся с prefix
+        // Эта функция должна работать за O(log(n))
 
         public int FindCountBF(string prefix)
         {
@@ -131,8 +131,8 @@ namespace autocomplete
             return e - b;
         }
 
-		public int FindCount(string prefix)
-		{
+        public int FindCount(string prefix)
+        {
             if(_searcher.IndexAndBoundsOf(prefix) == -1)
             {
                 return 0;
@@ -141,7 +141,7 @@ namespace autocomplete
             {
                 return _searcher.End - _searcher.Begin;
             }
-		}
+        }
 
 
         /// <summary>
@@ -352,5 +352,5 @@ namespace autocomplete
                 return i;
             }
         }
-	}
+    }
 }
