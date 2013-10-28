@@ -56,6 +56,10 @@ namespace PolynominalSolver
                 var tmp = left;
                 left = right;
                 right = tmp;
+
+                tmp = l_calc;
+                l_calc = r_calc;
+                r_calc = tmp;
             }
 
             _RecursiveSolveAndPrint(left, right, eps, l_calc, r_calc);
@@ -72,24 +76,13 @@ namespace PolynominalSolver
             Console.WriteLine("Current bounds: [{0}, {1}]", left, right);
 
 #if DEBUG
-            Console.WriteLine("l_calc = {0}, r_calc = {1}", l_calc, r_calc);
+            Console.WriteLine("[ II ]: l_calc = {0}, r_calc = {1}", l_calc, r_calc);
             Console.WriteLine("Press Enter to continue");
             Console.ReadLine();
 #endif
             if(Math.Abs(right - left) < double.Epsilon)
             {
                 Console.WriteLine("Cannot find root :(");
-                return;
-            }
-
-            if(Math.Abs(l_calc) < eps)
-            {
-                Console.WriteLine("Root: {0}", left);
-                return;
-            }
-            if(Math.Abs(r_calc) < eps)
-            {
-                Console.WriteLine("Root: {0}", right);
                 return;
             }
 
@@ -100,7 +93,11 @@ namespace PolynominalSolver
             Console.WriteLine("[ II ]: curr_calc = {0}", curr_calc);
 #endif
 
-            if(Math.Sign(curr_calc) == Math.Sign(l_calc))
+            if(Math.Abs(curr_calc) < eps)
+            {
+                Console.WriteLine("Root: {0}", curr);
+            }
+            else if(Math.Sign(curr_calc) == Math.Sign(l_calc))
             {
                 _RecursiveSolveAndPrint(curr, right, eps, curr_calc, r_calc, num + 1);
             }
@@ -139,7 +136,9 @@ namespace PolynominalSolver
             }
 
             var solver = new PolynominalSolver(factors);
-            solver.RecursiveSolveAndPrint(left, right, 1e-6);
+            var eps = 1e-6;
+
+            solver.RecursiveSolveAndPrint(left, right, eps);
         }
     }
 }
