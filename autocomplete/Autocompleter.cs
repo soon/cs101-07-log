@@ -133,14 +133,8 @@ namespace autocomplete
 
         public int FindCount(string prefix)
         {
-            if(_searcher.IndexAndBoundsOf(prefix) == -1)
-            {
-                return 0;
-            }
-            else
-            {
-                return _searcher.End - _searcher.Begin;
-            }
+            _searcher.IndexAndBoundsOf(prefix);
+            return _searcher.End - _searcher.Begin;
         }
 
 
@@ -284,7 +278,11 @@ namespace autocomplete
                 return begin;
             }
 
-            /// <returns></returns>
+            /// <summary>
+            /// Search for the last occurense in the whole array
+            /// </summary>
+            /// <returns>Index of past the last finded element
+            /// If element does not exist, returns -1</returns>
             public int IndexOfPastTheLast(T x)
             {
                 return IndexOfPastTheLast(x, 0, _array.Length);
@@ -322,10 +320,8 @@ namespace autocomplete
             }
 
             /// <summary>
-            /// Fucking comments...
-            /// </summary>
-            /// <param name="x"></param>
-            /// <returns></returns>
+            /// Overloaded version, uses 0 for begin and size of array for end
+            /// </summary>           
             public int IndexAndBoundsOf(T x)
             {
                 return IndexAndBoundsOf(x, 0, _array.Length);
